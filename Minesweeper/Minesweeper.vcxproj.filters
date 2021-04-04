@@ -16,18 +16,39 @@
     <Filter Include="Resource Files\data">
       <UniqueIdentifier>{e0e05eb6-3ac1-47ed-8793-5b9326b4e44a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\map">
+      <UniqueIdentifier>{db9cbe6e-dcae-446d-be8d-7809e155a903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine">
+      <UniqueIdentifier>{330ff78b-c674-4ffe-8cd6-4c55b8666f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\map\chunk">
+      <UniqueIdentifier>{7325e0c0-3d94-46f4-91b1-21875c94ea46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\map.cpp">
+      <Filter>Source Files\map</Filter>
+    </ClCompile>
     <ClCompile Include="src\game\game.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\chunk.cpp">
+      <Filter>Source Files\map\chunk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\map.h">
+      <Filter>Source Files\map</Filter>
+    </ClInclude>
     <ClInclude Include="src\game\game.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\chunk.h">
+      <Filter>Source Files\map\chunk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

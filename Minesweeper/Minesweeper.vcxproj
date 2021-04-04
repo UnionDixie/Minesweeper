@@ -147,11 +147,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\chunk.cpp" />
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\chunk.h" />
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\map.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\1.png" />

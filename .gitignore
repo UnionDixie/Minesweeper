@@ -16,3 +16,6 @@ Minesweeper/.vs/Minesweeper/v16/ipch/AutoPCH/f9082eb244fbffe0/123.ipch
 *.enc
 *.idb
 Minesweeper/Debug/Minesweeper.vcxproj.FileListAbsolute.txt
+*.ipch
+*.iobj
+*.ipdb
