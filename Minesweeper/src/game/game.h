@@ -10,6 +10,7 @@
 //static_assert
 
 #include <optional>
+#include <vector>
 
 class Game
 {
@@ -19,12 +20,27 @@ public:
 	~Game();
 
 private:
+	enum Type
+	{
+		empty,
+		one,
+		two,
+		three,
+		four,
+		five,
+		six,
+		seven,
+		eigth,
+		bomb,
+		close,
+		flag
+	};
 	std::random_device rand;
 	std::mt19937 gen;
 	std::uniform_int_distribution<int> dist;
 
-	int sizeMap;//square 10*10 easy
-	const int bomb = 10;
+	const int sizeMap = 10;//square 10*10 easy
+	const int bombs = 10;
 
 	int flags = 0;
 
@@ -34,7 +50,7 @@ private:
 	sf::Sprite TileMap;
 
 	sf::Font font;
-	sf::Text text;
+	sf::Text text,sec;
 	std::pair<int, int> textPos = { 150,2 };
 	const int sizeText = 24;
 
@@ -48,7 +64,9 @@ private:
 	int MapValue[12][12];//val - bomb or num
 	int MapDraw[12][12];//drawMap
 
+	sf::Clock clock;
+	sf::Time timer;
 
-
-
+	std::vector<std::vector
+		<std::tuple<sf::Sprite, sf::Texture*, int>>> tiles;
 };

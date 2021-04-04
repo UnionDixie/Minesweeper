@@ -2,14 +2,15 @@
 
 Game::Game() : gen(rand()),
 			   sizeMap(10), dist(1,10),
-			   window(sf::VideoMode(400, 500), L"Сапер xD!")
+			   window(sf::VideoMode(400, 500), L"Сапер xD!" ,
+				      sf::Style::Close | sf::Style::Titlebar)
 {
 	//window.setVerticalSyncEnabled(true);//vSync
 	if (!TileMapTexture.loadFromFile(Dir + nameTileMap))
 	{
 		std::cerr << "Failt load file\n";
 		sf::Image redBox;
-		redBox.create(200, 200, sf::Color::Red);
+		redBox.create(800, 600, sf::Color::Red);
 		TileMapTexture.loadFromImage(redBox);
 	}
 	TileMap.setTexture(TileMapTexture);
@@ -21,11 +22,78 @@ Game::Game() : gen(rand()),
 	text.setCharacterSize(sizeText);
 	text.setFillColor(sf::Color::Red);
 
+	sf::Text tmp("",font,18);
+	sec = tmp;
+	sec.setPosition(size * (sizeMap + 2) / 2, (sizeMap + 2) * size);
+	sec.setFillColor(sf::Color::Red);
+
+	{
+		tiles.resize(sizeMap + 2);
+		for (size_t i = 0; i <= sizeMap + 1; i++)
+		{
+			tiles[i].resize(sizeMap + 2);
+			//tiles[i].push_back(std::make_tuple(sf::Sprite(),nullptr,0));
+		}
+
+
+		for (size_t i = 0; i < bomb; i++)
+		{
+			int x = dist(gen), y = dist(gen);
+			auto& [sp,tex,val] = tiles[x][y];
+			tex = &TileMapTexture;
+			sp.setTexture(*tex);
+			sp.setTextureRect(sf::IntRect(320,0,size,size));
+			val = Type::bomb;
+		}
+		for (size_t i = 1; i <= sizeMap; i++) {
+			for (size_t j = 1; j <= sizeMap; j++)
+			{
+				auto& [sp, tex, val] = tiles[i][j];
+				tex = &TileMapTexture;
+				sp.setTexture(*tex);
+				sp.setTextureRect(sf::IntRect(320, 0, size, size));
+				
+				if (!val) {
+					val = Type::empty;
+				}
+			}
+		}
+
+		for (size_t i = 1; i <= sizeMap; i++) {
+			for (size_t j = 1; j <= sizeMap; j++)
+			{
+				auto& [sp, tex, val] = tiles[i][j];
+				int cnt = 0;
+				if (val == 9) {//if bomb
+					continue;
+				}
+				if (auto & [sp, tex, val] = tiles[i - 1][j]; val == 9)
+					++cnt;//up
+				if (auto& [sp, tex, val] = tiles[i + 1][j]; val == 9)
+					++cnt;//down
+				if (auto& [sp, tex, val] = tiles[i][j + 1]; val == 9)
+					++cnt;//right
+				if (auto& [sp, tex, val] = tiles[i][j - 1]; val == 9)
+					++cnt;//left
+				if (auto& [sp, tex, val] = tiles[i + 1][j + 1]; val == 9)
+					++cnt;//diagn
+				if (auto & [sp, tex, val] = tiles[i - 1][j + 1];val == 9)
+					++cnt;										
+				if (auto & [sp, tex, val] = tiles[i + 1][j - 1];val == 9)
+					++cnt;										
+				if (auto & [sp, tex, val] = tiles[i - 1][j - 1];val == 9)
+					++cnt;
+				MapValue[i][j] = cnt;//0..8
+			}
+		}
+
+	}
+
+
 	for (size_t i = 0; i < bomb; i++)
 	{
 		MapValue[dist(gen)][dist(gen)] = 9;
 	}
-
 	for (size_t i = 1; i <= sizeMap; i++) {
 		for (size_t j = 1; j <= sizeMap; j++)
 		{
@@ -92,10 +160,11 @@ void Game::run()
 		return std::nullopt;
 	};
 
-
-
 	while (window.isOpen())
 	{
+		timer = clock.getElapsedTime();
+		sec.setString(std::to_string(static_cast<int>(timer.asSeconds())));
+		//clock.restart();
 		auto mousePos = static_cast<sf::Vector2f> (sf::Mouse::getPosition(window));
 
 		sf::Event event;
@@ -108,8 +177,6 @@ void Game::run()
 			}
 
 			if (event.type == sf::Event::MouseButtonPressed) {
-
-
 				if (event.key.code == sf::Mouse::Left) {
 					if (auto xy = contains(mousePos); xy != std::nullopt) {
 						auto [x, y] = *xy;
@@ -123,7 +190,6 @@ void Game::run()
 				else if (event.key.code == sf::Mouse::Right) {// Если была нажата правая кнопка мыши, то
 					if (auto xy = contains(mousePos); xy != std::nullopt) {
 						auto [x, y] = *xy;
-
 						if (MapDraw[x][y] == 11)
 							MapDraw[x][y] = 10;// off flag
 						else
@@ -148,6 +214,7 @@ void Game::run()
 		}
 		if (state > 0)
 			window.draw(text);//win or lose
+		window.draw(sec);
 		window.display();
 	}
 }
