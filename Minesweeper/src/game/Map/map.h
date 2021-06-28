@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include <list>
+#include <vector>
 #include <random>
 #include <iostream>
 
@@ -25,23 +25,21 @@ public:
 		flag
 	};
 	Field();
-	std::pair<bool, Chunk*> contains(const sf::Vector2f&);
-	void switchRect(Chunk&,const int);
+	Chunk* contains(const sf::Vector2f&);
+	void switchRect(Chunk&,int);
 	std::vector<std::vector<Chunk>>& getField();
-	~Field();
+	~Field() = default;
 private:
 	std::vector<std::vector<Chunk>> chunks;
-
-	std::random_device rand;
-	std::mt19937 gen;
-	std::uniform_int_distribution<int> dist;
-
 	sf::Texture TileMapTexture;
-
 	const int bombs = 10;
 	const int sizeMap = 10;
 	const int size = 32;//size of tileMap
 	const std::string Dir = "Data/";
 	const std::string nameTileMap = "1.png";
+
+	std::random_device rand;
+	std::mt19937 gen;
+	std::uniform_int_distribution<int> dist;
 };
 
