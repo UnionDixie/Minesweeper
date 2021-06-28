@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() : window(sf::VideoMode(400, 500), "Minesweeper xD!"), field(10,10,32)
+Game::Game() : window(sf::VideoMode(384, 450), "Minesweeper xD!"), field(10,10,32)
 {
 	bombs = 10;
 

@@ -23,7 +23,7 @@ private:
 	Field field;
 	sf::Font font;
 	sf::Text message, seconds;
-	std::pair<int, int> textPos = { 145,425 };
+	std::pair<int, int> textPos = { 145,400 };
 	const int sizeText = 24;
 	const int sizeMap = 10;
 	const int size = 32;//size of tileMap
