@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Map/map.h"
+#include "Loader/DataLoader.h"
 
 class Game
 {
@@ -12,14 +13,13 @@ public:
 	void run();
 	~Game() = default;
 private:
-	sf::RenderWindow window;
 	void update();
 	void HandleEvent();
 	void drawEntity();
-
 	void collision(int key);
 	void updateCeil(int key, Chunk*& chunk);
 private:
+	sf::RenderWindow window;
 	Field field;
 	sf::Font font;
 	sf::Text message, seconds;
@@ -36,7 +36,7 @@ private:
 		win
 	};
 	int state = States::running;
-	const int bombs = 10;
+	int bombs;
 	int flags = 0;
 	int scores = 0;
 };

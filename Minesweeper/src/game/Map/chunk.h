@@ -1,7 +1,5 @@
 #include <SFML/Graphics.hpp>
 
-
-
 class Chunk
 {
 public:
@@ -11,8 +9,9 @@ public:
 	void setRect(sf::IntRect);
 	~Chunk() = default;
 public:
-	int logic;
-	int draws;
+	int logic = 0;
+	int draws = 10;
+	std::pair<int, int> pos = {-1,-1};
 private:
 	sf::Sprite chunk;
 };

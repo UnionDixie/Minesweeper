@@ -1,26 +1,27 @@
 #include "Game.h"
 
-#include "Loader/DataLoader.h"
-
-
-Game::Game() : window(sf::VideoMode(400, 500), "Minesweeper xD!"), field()
+Game::Game() : window(sf::VideoMode(400, 500), "Minesweeper xD!"), field(10,10,32)
 {
+	bombs = 10;
+
 	DataLoader loader("Data/");
 
 	if (auto it = loader.getFont("arial"); it != nullptr) {
-		font = *loader.getFont("arial");
+		font = *it;
 	}
-	
 	sf::Text tmp("", font, sizeText);
-
 	message = tmp;
 	message.setPosition(textPos.first, textPos.second);
 	message.setFillColor(sf::Color::Red);
-		
 	const int offset = 25;
 	seconds = std::move(tmp);
 	seconds.setPosition((size * 10 + offset) / 2, size * 10 + offset * 2);
 	seconds.setFillColor(sf::Color::Red);
+
+	if (auto it = loader.getTexture("1"); it != nullptr) {
+		field.setTexture(it.get());
+		field.generate();
+	}
 
 }
 
@@ -32,6 +33,11 @@ void Game::HandleEvent()
 		if (event.type == sf::Event::Closed ||
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 			window.close();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && state) {
+			state = 0;
+			clock.restart();
+			field.generate();
 		}
 		if (event.type == sf::Event::MouseButtonPressed) {	
 			if (event.key.code == sf::Mouse::Left || event.key.code == sf::Mouse::Right) {
@@ -49,6 +55,7 @@ void Game::collision(int key)
 	}
 }
 
+//awful code
 void Game::updateCeil(int key,Chunk*& chunk)
 {
 	if (key == sf::Mouse::Left) {
@@ -56,6 +63,9 @@ void Game::updateCeil(int key,Chunk*& chunk)
 			if (chunk->logic == Field::bomb) {
 				message.setString("You Lose");
 				state = States::lose;
+			}
+			else {
+				field.Open(chunk);
 			}
 			chunk->draws = chunk->logic;
 	}
@@ -107,19 +117,11 @@ void Game::run()
 {
 	while (window.isOpen())
 	{
-		//if (state == States::running) {
-			update();
-			HandleEvent();
-			window.clear(sf::Color::White);
-			drawEntity();
-			window.display();
-		//}
-		//else {
-		//	//sf::sleep(sf::Time(sf::seconds(5)));
-		//	HandleEvent();
-		//	window.clear(sf::Color::White);
-		//	window.display();
-		//}
+		update();
+		HandleEvent();
+		window.clear(sf::Color::White);
+		drawEntity();
+		window.display();
 	}
 }
 
