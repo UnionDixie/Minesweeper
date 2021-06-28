@@ -69,8 +69,8 @@ void Field::Open(Chunk* chunk)
 				auto [x, y] = chunk->pos;
 				auto w = x + dx, z = y + dy;
 				if (w >= 1 && z >= 1 && w <= sizeMap && z <= sizeMap) {
-					if (chunks[w][z].logic == 0) {
-						chunks[w][z].setRect(sf::IntRect(Field::empty * 32, 0, 32, 32));
+					if (chunk->logic == 0) {
+						chunks[w][z].setRect(sf::IntRect(chunks[w][z].logic * 32, 0, 32, 32));
 						Open(&chunks[w][z]);
 					}
 				}
