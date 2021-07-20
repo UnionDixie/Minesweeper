@@ -50,38 +50,37 @@ void Game::HandleEvent()
 void Game::collision(int key)
 {
 	auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-	if (auto chunk = field.contains(mousePos); chunk != nullptr) {
-		updateCeil(key, chunk);
-	}
+	auto& chunk = field.contains(mousePos);
+	updateCeil(key, chunk);
 }
 
 //awful code
-void Game::updateCeil(int key,Chunk*& chunk)
+void Game::updateCeil(int key,Chunk& chunk)
 {
 	if (key == sf::Mouse::Left) {
-			field.switchRect(*chunk, chunk->logic);
-			if (chunk->logic == Field::bomb) {
+			field.switchRect(chunk, chunk.whatIs);
+			if (chunk.whatIs == Field::bomb) {
 				message.setString("You Lose");
 				state = States::lose;
 			}
 			else {
 				field.Open(chunk);
 			}
-			chunk->draws = chunk->logic;
+			chunk.whatDraw = chunk.whatIs;
 	}
 	else if (key == sf::Mouse::Right) {
-		if (chunk->draws == Field::flag) {
+		if (chunk.whatDraw == Field::flag) {
 			flags--;
-			if (chunk->logic == Field::bomb) {
+			if (chunk.whatIs == Field::bomb) {
 				scores--;
 			}
-			chunk->draws = Field::close;
-			chunk->setRect(sf::IntRect(Field::close * 32, 0, 32, 32));
+			chunk.whatDraw = Field::close;
+			chunk.setRect(sf::IntRect(Field::close * 32, 0, 32, 32));
 		}
-		else if (flags<=bombs && chunk->draws == Field::close) {
-			chunk->draws = Field::flag;
-			chunk->setRect(sf::IntRect(Field::flag * 32, 0, 32, 32));
-			if (chunk->logic == Field::bomb) {
+		else if (flags<=bombs && chunk.whatDraw == Field::close) {
+			chunk.whatDraw = Field::flag;
+			chunk.setRect(sf::IntRect(Field::flag * 32, 0, 32, 32));
+			if (chunk.whatIs == Field::bomb) {
 				scores++;
 			}
 			flags++;

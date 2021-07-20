@@ -1,11 +1,13 @@
 #pragma once
 
-#include<map>
-#include<string>
-#include<string_view>
-#include<SFML/Graphics.hpp>
-#include<filesystem>
-#include<memory>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <string_view>
+#include <filesystem>
+#include <memory>
 
 class DataLoader
 {
@@ -16,11 +18,7 @@ public:
 	std::unique_ptr<sf::Font> getFont(std::string_view name) const;
 	~DataLoader() = default;
 private:
-
-private:
 	std::map<std::string, sf::Texture> textureStorage;
 	std::map<std::string, sf::Font> fontStorage;
-	//std::map<std::string, sf::> soundStorage;
-	//also can use any :)
 };
 

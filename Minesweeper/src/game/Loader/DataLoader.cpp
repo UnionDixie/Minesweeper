@@ -1,8 +1,5 @@
 #include "DataLoader.h"
 
-#include <iostream>
-#include <vector>
-
 namespace fs = std::filesystem;
 
 DataLoader::DataLoader(std::string_view path)
@@ -36,7 +33,6 @@ DataLoader::DataLoader(std::string_view path)
 std::unique_ptr<sf::Texture> DataLoader::getTexture(std::string_view name) const
 {
     if (auto it = textureStorage.find(name.data()); it != textureStorage.end()) {
-        
         return std::make_unique<sf::Texture>(it->second);
     }
     return std::make_unique<sf::Texture>();

@@ -1,9 +1,7 @@
 #include <SFML/Graphics.hpp>
-
 #include <vector>
 #include <random>
 #include <iostream>
-
 #include "chunk.h"
 
 class Field
@@ -26,12 +24,12 @@ public:
 	};
 	//10 10 32
 	Field(int bombs,int sizeMap,int size);
-	Chunk* contains(const sf::Vector2f&);
+	Chunk& contains(const sf::Vector2f&);
 	void switchRect(Chunk&,int);
 	std::vector<std::vector<Chunk>>& getField();
 	void generate();
-	void setTexture(sf::Texture* texture);
-	void Open(Chunk* chunk);
+	void setTexture(const sf::Texture* texture);
+	void Open(Chunk& chunk);
 	~Field() = default;
 private:
 	std::vector<std::vector<Chunk>> chunks;

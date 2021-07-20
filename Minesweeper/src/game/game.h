@@ -17,7 +17,7 @@ private:
 	void HandleEvent();
 	void drawEntity();
 	void collision(int key);
-	void updateCeil(int key, Chunk*& chunk);
+	void updateCeil(int key, Chunk& chunk);
 private:
 	sf::RenderWindow window;
 	Field field;
